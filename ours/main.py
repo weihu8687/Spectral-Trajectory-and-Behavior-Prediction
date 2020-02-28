@@ -10,7 +10,7 @@ import pickle
 
 
 DATA = 'APOL'
-SUFIX = '1st'
+SUFIX = '1stS1new'
 
 
 device = torch.device("cuda:0")
@@ -26,8 +26,8 @@ epochs = 15
 
 save_per_epochs = 5
 
-train_seq_len = 20
-pred_seq_len = 30
+train_seq_len = 6
+pred_seq_len = 10
 
 
 if __name__ == "__main__":

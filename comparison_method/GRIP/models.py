@@ -73,8 +73,8 @@ class GRIPModel(nn.Module):
     def forward(self, x):
         Ats = torch.zeros((x.shape[0], x.shape[2], x.shape[2], x.shape[3])).to(device)
         for b in range(x.shape[0]):
-            if b % 5 == 0:
-                print('{}/{}'.format(b, x.shape[0]))
+            # if b % 5 == 0:
+                #print('{}/{}'.format(b, x.shape[0]))
             for t in range(x.shape[3]):
 
                 Ats[b, :, :, t] = self.compute_A(x[b, :, :, t].permute(1, 0))
