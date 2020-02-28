@@ -1,4 +1,4 @@
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/forecasting-trajectory-and-behavior-of-road-1/trajectory-prediction-on-apolloscape)](https://paperswithcode.com/sota/trajectory-prediction-on-apolloscape?p=forecasting-trajectory-and-behavior-of-road-1) [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/forecasting-trajectory-and-behavior-of-road-1/trajectory-prediction-on-argoverse)](https://paperswithcode.com/sota/trajectory-prediction-on-argoverse?p=forecasting-trajectory-and-behavior-of-road-1)[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/forecasting-trajectory-and-behavior-of-road-1/trajectory-prediction-on-lyft-level-5)](https://paperswithcode.com/sota/trajectory-prediction-on-lyft-level-5?p=forecasting-trajectory-and-behavior-of-road-1)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/forecasting-trajectory-and-behavior-of-road-1/trajectory-prediction-on-apolloscape)](https://paperswithcode.com/sota/trajectory-prediction-on-apolloscape?p=forecasting-trajectory-and-behavior-of-road-1) [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/forecasting-trajectory-and-behavior-of-road-1/trajectory-prediction-on-argoverse)](https://paperswithcode.com/sota/trajectory-prediction-on-argoverse?p=forecasting-trajectory-and-behavior-of-road-1)[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/forecasting-trajectory-and-behavior-of-road-1/trajectory-prediction-on-lyft-level-5)](https://paperswithcode.com/sota/trajectory-prediction-on-lyft-level-5?p=forecasting-trajectory-and-behavior-of-road-1)[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/forecasting-trajectory-and-behavior-of-road-1/trajectory-prediction-on-ngsim)](https://paperswithcode.com/sota/trajectory-prediction-on-ngsim?p=forecasting-trajectory-and-behavior-of-road-1)
 <br>
 ![](https://img.shields.io/github/issues/rohanchandra30/Spectral-Trajectory-Prediction?color=brightgreen&style=plastic)![](https://img.shields.io/github/stars/rohanchandra30/Spectral-Trajectory-Prediction?color=cyan&style=plastic)![](https://img.shields.io/github/forks/rohanchandra30/Spectral-Trajectory-Prediction?color=blue&style=plastic)
 
@@ -23,8 +23,8 @@ Please cite our work if you found it useful.
 <img src="figures/behavior.gif" width="260">
 </p>
 
-Since this is a research codebase and maintained by students, do let us know of any bugs you may encounter and we will do our best to resolve them :) A list of active bugs with solutions is regularly maintained and compiled [**here**](https://github.com/rohanchandra30/Spectral-Trajectory-Prediction/wiki/Known-bugs).
-
+Since this is a research codebase and maintained by students, this repo is under active maintenance. Do let us know of any issues you may encounter and we will do our best to resolve them :) A list of known bugs with solutions is regularly maintained and compiled [**here**](https://github.com/rohanchandra30/Spectral-Trajectory-Prediction/wiki/Known-bugs), and optimizations/enhancements to the code
+are compiled [**here**](https://github.com/rohanchandra30/Spectral-Trajectory-and-Behavior-Prediction/wiki/Enhancements).
 ## Instruction
 
 Python version: 3.7
@@ -76,6 +76,9 @@ Agrim Gupta, Justin Johnson, Fei-Fei Li, Silvio Savarese, Alexandre Alahi.
 Xin Li, Xiaowen Ying, Mooi Choo Chuah 
 
 As the official implementation of the GRIP method is not available, the code provided here is our own effort to replicate the GRIP method to the best of our ability and does not necessarily convey the original implementation of the authors. Please contact the authors directly for the original implementation. 
+
+#### Pull Requests and Contributions
+Additionally, the graph construction part of GRIP may be slow as the code does not exploit optimized data structures and algorithms. If anyone uses the GRIP code and can come up with an optimized way to reduce computational time, please consider creating a pull request and we will acknoledge your contributions here ! :)
 
 ### Datasets
 * [**Argoverse**](https://www.argoverse.org/data.html)

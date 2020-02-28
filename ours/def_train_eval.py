@@ -451,6 +451,7 @@ def compute_accuracy_stream1(traindataloader, labeldataloader, encoder, decoder,
         fde += mse[-1]
         # count += testbatch_in_form.size()[0]
         count +=1  
+    
     ade = ade/count
     fde = fde/count
     print('ADE: {}'.format(ade))
