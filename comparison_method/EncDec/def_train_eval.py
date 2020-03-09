@@ -18,8 +18,8 @@ from torch.autograd import Variable
 device = torch.device("cuda:0")
 # s1 = True
 BATCH_SIZE=40
-train_seq_len = 20
-pred_seq_len = 30
+train_seq_len = 6
+pred_seq_len = 10
 FINAL_GRIP_OUTPUT_COORDINATE_SIZE = 256
 FINAL_GRIP_OUTPUT_COORDINATE_SIZE_DECODER = 512
 MODEL_LOC = '../../resources/trained_models/EncDec'
@@ -218,7 +218,7 @@ def MSE ( y_pred , y_gt , device=device ):
     muY = y_pred[ : , : , 1 ]
     x = np.array ( y_gt[ : , : , 0 ] )
     y = np.array ( y_gt[ : , : , 1 ] )
-    print ( muX , x , muY , y )
+    #print ( muX , x , muY , y )
     acc = np.power ( x - muX , 2 ) + np.power ( y - muY , 2 )
     lossVal = np.sum ( acc , axis=0 ) / len ( acc )
     return lossVal

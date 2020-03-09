@@ -9,12 +9,12 @@ from def_train_eval import *
 import pickle            
 
 
-DATA = 'APOL'
+DATA = 'NGSIM'
 SUFIX = '1stS1new'
 
 
-device = torch.device("cuda:0")
-s2 = False
+device = torch.device("cuda:1")
+s2 = True
 TRAIN = True
 EVAL = True
 
@@ -22,12 +22,12 @@ EVAL = True
 DIR = '../resources/data/{}/'.format(DATA)
 MODEL_DIR = '../resources/trained_models/'
 
-epochs = 15
+epochs = 10
 
 save_per_epochs = 5
 
-train_seq_len = 6
-pred_seq_len = 10
+train_seq_len = 30
+pred_seq_len = 50
 
 
 if __name__ == "__main__":

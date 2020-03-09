@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from scipy.sparse.linalg import eigs
 from torch.autograd import Variable
 
-device = torch.device("cuda:0")
+device = torch.device("cuda:1")
 BATCH_SIZE=128
 MU = 5
 MODEL_LOC = '../resources/trained_models/Ours/{}'
@@ -96,11 +96,11 @@ def trainIters(n_epochs, train_dataloader, valid_dataloader, train2_dataloader,v
     decoder_stream1 = Decoder ( 's1' , input_dim , hidden_dim , output_dim, batch_size, step_size ).to ( device )
     encoder_stream1_optimizer = optim.RMSprop(encoder_stream1.parameters(), lr=learning_rate)
     decoder_stream1_optimizer = optim.RMSprop(decoder_stream1.parameters(), lr=learning_rate)
-    #print("loading {}...".format(encoder1loc))
-    #encoder_stream1.load_state_dict(torch.load(encoder1loc))
-    #encoder_stream1.eval()       
-    #decoder_stream1.load_state_dict(torch.load(decoder1loc))        
-    #decoder_stream1.eval()
+    print("loading {}...".format(encoder1loc))
+    encoder_stream1.load_state_dict(torch.load(encoder1loc))
+    encoder_stream1.eval()       
+    decoder_stream1.load_state_dict(torch.load(decoder1loc))        
+    decoder_stream1.eval()
     if s2 is True:
         batch = load_batch ( 0 , BATCH_SIZE , 'pred' , train_raw , pred_raw , train2_raw , pred2_raw, train_eig_raw, pred_eig_raw )
         _ , _, batch = batch
