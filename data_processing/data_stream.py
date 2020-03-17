@@ -44,7 +44,7 @@ def data_for_stream1(dir, train_seq_len = train, pred_seq_len = pred, frame_lent
     :return: train sequences and prediction sequences
     '''
 
-    data = np.loadtxt(dir)
+    data = np.load(dir)
     d_IDs = np.unique(data[:,4]).astype(int)
 
     train_sequence = []
@@ -126,7 +126,7 @@ def data_for_stream2(dir, train_seq_len = train, pred_seq_len = pred, frame_lent
     :return: train sequences and prediction sequences
     '''
 
-    data = np.loadtxt(dir)
+    data = np.load(dir)
 
     train_sequence_stream2 = []
     pred_sequence_stream2 = []
@@ -327,6 +327,36 @@ def compute_A ( frame ):
     return A
 
 
+'''
+The DATA_DIR for data_for_stream1 and data_for_stream2 functions should be as below
+
+DATA_DIR = 'resources/data/ARGO/train/TrainSet.npy'     ## for ARGO train
+DATA_DIR = 'resources/data/ARGO/test/TestSet.npy'       ## for ARGO test
+DATA_DIR = 'resources/data/ARGO/val/ValSet.npy'         ## for ARGO val
+
+DATA_DIR = 'resources/data/APOL/train/trainSet0.npy'    ## for APOL train
+DATA_DIR = 'resources/data/APOL/test/testSet0.npy'      ## for APOL test
+DATA_DIR = 'resources/data/APOL/val/valSet0.npy'        ## for APOL val
+
+DATA_DIR = 'resources/data/LYFT/train/trainSet0.npy'    ## for LYFT train
+DATA_DIR = 'resources/data/LYFT/test/testSet0.npy'      ## for LYFT test
+DATA_DIR = 'resources/data/LYFT/val/valSet0.npy'        ## for LYFT val
+'''
+
+## Uncomment the below lines to generate and save the data_for_stream1 and data_for_stream 2. DATA_DIR needs to be given as explained above
+
+# tr1, pr1 = data_for_stream1(DATA_DIR, train_seq_len = train, pred_seq_len = pred, frame_lenth_cap = train+pred )
+
+# save_to_pkl(DIR + "{}/".format(DATA)  + 'stream1_obs_data_{}.pkl'.format(TYPE), tr1)
+# save_to_pkl(DIR + "{}/".format(DATA)  + 'stream1_pred_data_{}.pkl'.format(TYPE), pr1)
+
+# tr2, pr2 = data_for_stream2(DATA_DIR, train_seq_len = train, pred_seq_len = pred, frame_lenth_cap = train+pred):
+
+# save_to_pkl(DIR + "{}/".format(DATA)  + 'stream2_obs_data_{}.pkl'.format(TYPE), tr2)
+# save_to_pkl(DIR + "{}/".format(DATA)  + 'stream2_pred_data_{}.pkl'.format(TYPE), pr2)
+
+
+## 
 tr_seq_2 = pickle.load(open('../resources/data/{}/{}'.format(DATA, NAME1), 'rb'))
 print('computing train eigens for {} {}...'.format(DATA, TYPE))
 eigs_train = compute_eigs(tr_seq_2, 'train')
