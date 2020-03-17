@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import numpy as np
 from torch.autograd import Variable
 
-device = torch.device("cuda:1")
+device = torch.device("cuda:0")
 
 class GRIPModel(nn.Module):
     def __init__(self, coordinates, timesteps):
@@ -73,8 +73,8 @@ class GRIPModel(nn.Module):
     def forward(self, x):
         Ats = torch.zeros((x.shape[0], x.shape[2], x.shape[2], x.shape[3])).to(device)
         for b in range(x.shape[0]):
-            # if b % 5 == 0:
-                #print('{}/{}'.format(b, x.shape[0]))
+            if b % 5 == 0:
+                print('{}/{}'.format(b, x.shape[0]))
             for t in range(x.shape[3]):
 
                 Ats[b, :, :, t] = self.compute_A(x[b, :, :, t].permute(1, 0))

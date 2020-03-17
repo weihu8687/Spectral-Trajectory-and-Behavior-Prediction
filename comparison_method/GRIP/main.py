@@ -4,18 +4,18 @@ from def_train_eval import *
 from data_stream import *
 import pickle              # import module first
 
-DATA = 'NGSIM'
+DATA = 'APOL'
 SUFIX = '1st'
-TRAIN = True
+TRAIN = False
 EVAL = True 
 DIR = '../../resources/data/{}/'.format(DATA)
 
-epochs = 1
+epochs = 3
 save_per_epoch = 5
 
 
-train_seq_len = 30
-pred_seq_len = 50
+train_seq_len = 6
+pred_seq_len = 10
 
 
 if __name__ == "__main__":

@@ -81,9 +81,9 @@ The original GRIP implementation by the authors is provided [here](https://githu
 
 
 ### Datasets
-* [**Argoverse**](https://www.argoverse.org/data.html)
-* [**Apolloscape**](http://apolloscape.auto/trajectory.html)
-* [**Lyft Level 5**](https://level5.lyft.com/dataset/)
+* [**Argoverse**](https://www.argoverse.org/data.html) input length: 20 & output length: 30
+* [**Apolloscape**](http://apolloscape.auto/trajectory.html) input length: 6 & output length: 10
+* [**Lyft Level 5**](https://level5.lyft.com/dataset/) input length: 20 & output length: 30
 
 
 ### Resources folder structure

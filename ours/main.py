@@ -9,7 +9,7 @@ from def_train_eval import *
 import pickle            
 
 
-DATA = 'NGSIM'
+DATA = 'APOL'
 SUFIX = '1stS1new'
 
 
@@ -22,12 +22,12 @@ EVAL = True
 DIR = '../resources/data/{}/'.format(DATA)
 MODEL_DIR = '../resources/trained_models/'
 
-epochs = 10
+epochs = 15
 
 save_per_epochs = 5
 
-train_seq_len = 30
-pred_seq_len = 50
+train_seq_len = 6
+pred_seq_len = 10
 
 
 if __name__ == "__main__":

@@ -18,8 +18,8 @@ from torch.autograd import Variable
 device = torch.device("cuda:0")
 # s1 = True
 BATCH_SIZE=40
-train_seq_len = 6
-pred_seq_len = 10
+train_seq_len = 30
+pred_seq_len = 50
 FINAL_GRIP_OUTPUT_COORDINATE_SIZE = 256
 FINAL_GRIP_OUTPUT_COORDINATE_SIZE_DECODER = 512
 MODEL_LOC = '../../resources/trained_models/EncDec'
