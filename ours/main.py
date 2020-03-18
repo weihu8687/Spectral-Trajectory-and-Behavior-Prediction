@@ -9,12 +9,12 @@ from def_train_eval import *
 import pickle            
 
 
-DATA = 'APOL'
-SUFIX = '1stS1new'
+DATA = 'OTH'
+SUFIX = '1stS15-5'
 
 
-device = torch.device("cuda:1")
-s2 = True
+device = torch.device("cpu")
+s2 = False
 TRAIN = True
 EVAL = True
 
@@ -22,26 +22,32 @@ EVAL = True
 DIR = '../resources/data/{}/'.format(DATA)
 MODEL_DIR = '../resources/trained_models/'
 
-epochs = 15
+epochs = 5
 
 save_per_epochs = 5
 
-train_seq_len = 6
-pred_seq_len = 10
+train_seq_len = 5
+pred_seq_len = 15
 
 
 if __name__ == "__main__":
     
     if TRAIN:
-        f1 = open ( DIR + 'stream1_obs_data_train.pkl', 'rb')  # 'r' for reading; can be omitted
-        g1 = open ( DIR + 'stream1_pred_data_train.pkl', 'rb')  # 'r' for reading; can be omitted
+        if DATA == 'OTH':
+            f1 = open ( DIR + 'stream1_obs_data_5_{}_train.pkl'.format(pred_seq_len), 'rb')  # 'r' for reading; can be omitted
+            g1 = open ( DIR + 'stream1_pred_data_5_{}_train.pkl'.format(pred_seq_len), 'rb')  # 'r' for reading; can be omitted
         
+        else:
+            f1 = open ( DIR + 'stream1_obs_data_train.pkl', 'rb')  # 'r' for reading; can be omitted
+            g1 = open ( DIR + 'stream1_pred_data_train.pkl', 'rb')  # 'r' for reading; can be omitted
+
 
         tr_seq_1 = pickle.load ( f1 )  # load file content as mydict
         pred_seq_1 = pickle.load ( g1 )  # load file content as mydict
         f1.close()
         g1.close()
 
+        
         if s2:
             f2 = open ( DIR + 'stream2_obs_data_train.pkl', 'rb')  # 'r' for reading; can be omitted
             g2 = open ( DIR + 'stream2_pred_data_train.pkl', 'rb')  # 'r' for reading; can be omitted
@@ -65,9 +71,12 @@ if __name__ == "__main__":
     
     if EVAL:
         print('start evaluating {}{}...'.format(DATA, SUFIX))
-        f1 = open ( DIR + 'stream1_obs_data_test.pkl', 'rb')  # 'r' for reading; can be omitted
-        g1 = open ( DIR + 'stream1_pred_data_test.pkl', 'rb')  # 'r' for reading; can be omitted
-
+        if DATA == 'OTH':
+            f1 = open ( DIR + 'stream1_obs_data_5_{}_test.pkl'.format(pred_seq_len), 'rb')  # 'r' for reading; can be omitted
+            g1 = open ( DIR + 'stream1_pred_data_5_{}_test.pkl'.format(pred_seq_len), 'rb')  # 'r' for reading; can be omitted
+        else:
+            f1 = open ( DIR + 'stream1_obs_data_test.pkl', 'rb')  # 'r' for reading; can be omitted
+            g1 = open ( DIR + 'stream1_pred_data_test.pkl', 'rb')  # 'r' for reading; can be omitted
         tr_seq_1 = pickle.load ( f1 )  # load file content as mydict
         pred_seq_1 = pickle.load ( g1 )  # load file content as mydict
         f1.close ()
