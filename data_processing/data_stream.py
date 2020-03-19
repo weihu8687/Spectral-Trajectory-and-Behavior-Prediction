@@ -350,7 +350,7 @@ DATA_DIR = 'resources/data/LYFT/val/valSet0.npy'        ## for LYFT val
 # save_to_pkl(DIR + "{}/".format(DATA)  + 'stream1_obs_data_{}.pkl'.format(TYPE), tr1)
 # save_to_pkl(DIR + "{}/".format(DATA)  + 'stream1_pred_data_{}.pkl'.format(TYPE), pr1)
 
-# tr2, pr2 = data_for_stream2(DATA_DIR, train_seq_len = train, pred_seq_len = pred, frame_lenth_cap = train+pred):
+# tr2, pr2 = data_for_stream2(DATA_DIR, train_seq_len = train, pred_seq_len = pred, frame_lenth_cap = train+pred)
 
 # save_to_pkl(DIR + "{}/".format(DATA)  + 'stream2_obs_data_{}.pkl'.format(TYPE), tr2)
 # save_to_pkl(DIR + "{}/".format(DATA)  + 'stream2_pred_data_{}.pkl'.format(TYPE), pr2)
