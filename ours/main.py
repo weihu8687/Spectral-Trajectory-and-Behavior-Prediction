@@ -13,14 +13,14 @@ DATA = 'OTH'
 SUFIX = '1stS15-5'
 
 
-device = torch.device("cpu")
+device = torch.device("cuda")
 s2 = False
 TRAIN = True
 EVAL = True
 
 
-DIR = '../resources/data/{}/'.format(DATA)
-MODEL_DIR = '../resources/trained_models/'
+DIR = 'resources/data/{}/'.format(DATA)
+MODEL_DIR = 'resources/trained_models/'
 
 epochs = 5
 

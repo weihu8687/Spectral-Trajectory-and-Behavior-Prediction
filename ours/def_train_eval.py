@@ -14,10 +14,10 @@ import matplotlib.pyplot as plt
 from scipy.sparse.linalg import eigs
 from torch.autograd import Variable
 
-device = torch.device("cpu")
+device = torch.device("cuda")
 BATCH_SIZE=128
 MU = 5
-MODEL_LOC = '../resources/trained_models/Ours/{}'
+MODEL_LOC = 'resources/trained_models/Ours/{}'
 
 
 def load_batch(index, size, seq_ID, train_sequence_stream1, pred_sequence_stream_1, train_sequence_stream2, pred_sequence_stream2, train_eig_seq, pred_eig_seq):
@@ -150,6 +150,7 @@ def trainIters(n_epochs, train_dataloader, valid_dataloader, train2_dataloader,v
                 print_loss_total_stream2 += loss_stream2
 
             loss_stream1 = train_stream1(input_stream1_tensor, target_stream1_tensor, encoder_stream1, decoder_stream1, encoder_stream1_optimizer, decoder_stream1_optimizer, output_stream2_decoder, batch_agent_ids, test_middle, s2)
+            print(loss_stream1)
             print_loss_total_stream1 += loss_stream1
                 # print(loss_stream1)
 
@@ -319,17 +320,17 @@ def compute_sample_loss(mu_1, mu_2,log_sigma_1, log_sigma_2, rho, y):
     pi_term = torch.Tensor([2*np.pi]).to(device)
 
     y_1 = y[:,0]
-    y_1 = (y_1-torch.mean(y_1))/y_1.max()
+    # y_1 = (y_1-torch.mean(y_1))/y_1.max()
     y_2 = y[:,1]
-    y_2 = (y_2 - torch.mean(y_2))/y_2.max()
-    #mu_1 = torch.mean(y_1) + (y_1 -torch.mean(mu_1))
-    #mu_1 = torch.mean(y_1) + (y_1 -torch.mean(mu_1)) * (torch.std(y_1))/(torch.std(mu_1))
-    #mu_2 = torch.mean(y_2) + (y_2 -torch.mean(mu_2))
-    #mu_2 = torch.mean(y_2) + (y_2 -torch.mean(mu_2)) * (torch.std(y_2))/(torch.std(mu_2))
+    # y_2 = (y_2 - torch.mean(y_2))/y_2.max()
+    mu_1 = torch.mean(y_1) + (y_1 -torch.mean(mu_1))
+    # mu_1 = torch.mean(y_1) + (y_1 -torch.mean(mu_1)) * (torch.std(y_1)/torch.std(mu_1))
+    mu_2 = torch.mean(y_2) + (y_2 -torch.mean(mu_2))
+    # mu_2 = torch.mean(y_2) + (y_2 -torch.mean(mu_2)) * ((torch.std(y_2))/(torch.std(mu_2)))
     z = ( (y_1 - mu_1)**2/(log_sigma_1**2) + ((y_2 - mu_2)**2/(log_sigma_2**2)) - 2*rho*(y_1-mu_1)*(y_2-mu_2)/((log_sigma_1 *log_sigma_2)) )
-    mog_lik2 = ( (-1*z)/(2*(1-rho**2)) ).exp()
+    mog_lik2 = torch.exp( (-1*z)/(2*(1-rho**2)) )
     mog_lik1 =  1/(pi_term * log_sigma_1 * log_sigma_2 * (1-rho**2).sqrt() )
-    mog_lik = (mog_lik1*mog_lik2).log()
+    mog_lik = (mog_lik1*(mog_lik2+1e-8)).log()
     return mog_lik
 
 def calculate_cluster_centers(agent_IDs, stream2_output, testbatch2):
@@ -454,7 +455,7 @@ def compute_accuracy_stream1(traindataloader, labeldataloader, encoder, decoder,
     
     ade = ade/count
     fde = fde/count
-    print('ADE: {}'.format(ade))
+    print('RMSE: {}'.format(ade))
     print("ADE: {} FDE: {}".format(np.mean(ade), fde))
 
 def makeplot(x, y, x_label, y_label, title, save_loc):
@@ -473,11 +474,13 @@ def MSE(y_pred, y_gt, device=device):
     muX = y_pred[:,:,0]
     muY = y_pred[:,:,1]
     x = np.array(y_gt[:,:, 0])
-    x = (x-np.mean(x))/x.max()
+    x = (x-np.mean(x))/x.std()
     y = np.array(y_gt[:,:, 1])
-    #muX = np.mean(x) + (x - np.mean(muX)) * (np.std(x))/(np.std(muX))
-    y = (y-np.mean(y))/y.max()
-    #muY = np.mean(y) + (x -np.mean(muY)) * (np.std(y))/(np.std(muY))
+    # muX = np.mean(x) + (x - np.mean(muX)) * (np.std(x))/(np.std(muX))
+    # muX = np.mean(x) + (x - np.mean(muX))
+    y = (y-np.mean(y))/y.std()
+    # muY = np.mean(y) + (y -np.mean(muY)) * (np.std(y))/(np.std(muY))
+    # muY = np.mean(y) + (y -np.mean(muY))
     acc = np.power(x-muX, 2) + np.power(y-muY, 2)
     lossVal = np.sum(acc, axis=0)/len(acc)
     return lossVal

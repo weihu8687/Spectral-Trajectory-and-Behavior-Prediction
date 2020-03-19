@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import numpy as np
 from torch.autograd import Variable
 
-device = torch.device("cpu")
+device = torch.device("cuda")
 
 class GraphConvolution ( nn.Module ):
     """
