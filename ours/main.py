@@ -14,7 +14,7 @@ SUFIX = '1stS15-5'
 
 
 device = torch.device("cuda")
-s2 = False
+s2 = True
 TRAIN = True
 EVAL = True
 
@@ -22,12 +22,12 @@ EVAL = True
 DIR = 'resources/data/{}/'.format(DATA)
 MODEL_DIR = 'resources/trained_models/'
 
-epochs = 5
+epochs = 100
 
 save_per_epochs = 5
 
 train_seq_len = 5
-pred_seq_len = 15
+pred_seq_len = 20
 
 
 if __name__ == "__main__":
@@ -49,10 +49,10 @@ if __name__ == "__main__":
 
         
         if s2:
-            f2 = open ( DIR + 'stream2_obs_data_train.pkl', 'rb')  # 'r' for reading; can be omitted
-            g2 = open ( DIR + 'stream2_pred_data_train.pkl', 'rb')  # 'r' for reading; can be omitted
-            f3 = open ( DIR + 'stream2_obs_eigs_train.pkl', 'rb')  # 'r' for reading; can be omitted
-            g3 = open ( DIR + 'stream2_pred_eigs_train.pkl', 'rb')  # 'r' for reading; can be omitted
+            f2 = open ( DIR + 'stream2_obs_data_5_{}_train.pkl', 'rb')  # 'r' for reading; can be omitted
+            g2 = open ( DIR + 'stream2_pred_data_5_{}_train.pkl', 'rb')  # 'r' for reading; can be omitted
+            f3 = open ( DIR + 'stream2_obs_eigs_5_{}_train.pkl', 'rb')  # 'r' for reading; can be omitted
+            g3 = open ( DIR + 'stream2_pred_eigs_5_{}_train.pkl', 'rb')  # 'r' for reading; can be omitted
             tr_seq_2 = pickle.load ( f2 )  # load file content as mydict
             pred_seq_2 = pickle.load ( g2 )  # load file content as mydict
             tr_eig_seq = pickle.load ( f3 )

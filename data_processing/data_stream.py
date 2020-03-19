@@ -3,13 +3,13 @@ import pickle
 from scipy.sparse.linalg import eigs
 
 
-DATA = 'NGSIM'
+DATA = 'OTH'
 TYPE = 'train'
-DIR = '../resources/data/'
+DIR = 'resources/data/'
 NAME1 = 'stream2_obs_data_{}.pkl'.format(TYPE)
 NAME2 = 'stream2_pred_data_{}.pkl'.format(TYPE)
-train = 30
-pred = 50
+train = 10
+pred = 40
 BS = 128
 
 
@@ -134,7 +134,7 @@ def data_for_stream2(dir, train_seq_len = train, pred_seq_len = pred, frame_lent
     # total_objects = 220
     total_objects = int(np.amax(data[:,1]))
 
-    d_IDs = np.unique(data[:,4]).astype(int)[:FIRST]
+    d_IDs = np.unique(data[:,4]).astype(int)
     sz = len(d_IDs)
     # traversing through all the dataset ID's
     for cur, data_id in enumerate(d_IDs):
@@ -285,7 +285,10 @@ def compute_eigs ( train_stream2, typ):
         eig_frame = []
         for which_frame in list ( train_stream2[ batch_idx ].keys())[ 2: ]:
             for j in range(N):
-                frame[j] = [train_stream2[batch_idx][which_frame][0,j],train_stream2[batch_idx][which_frame][1,j]]
+                try:
+                    frame[j] = [train_stream2[batch_idx][which_frame][0,j],train_stream2[batch_idx][which_frame][1,j]]
+                except:
+                    pass
             for l in range (N):
                 if frame[ l ] is not None:
                     neighbors = computeKNN ( frame , l , 4 )
@@ -343,21 +346,21 @@ DATA_DIR = 'resources/data/LYFT/test/testSet0.npy'      ## for LYFT test
 DATA_DIR = 'resources/data/LYFT/val/valSet0.npy'        ## for LYFT val
 '''
 
-## Uncomment the below lines to generate and save the data_for_stream1 and data_for_stream 2. DATA_DIR needs to be given as explained above
+# Uncomment the below lines to generate and save the data_for_stream1 and data_for_stream 2. DATA_DIR needs to be given as explained above
+DATA_DIR = 'resources/data/OTH/train/TrainSet0.npy'
+tr1, pr1 = data_for_stream1(DATA_DIR, train_seq_len = train, pred_seq_len = pred, frame_lenth_cap = train+pred )
 
-# tr1, pr1 = data_for_stream1(DATA_DIR, train_seq_len = train, pred_seq_len = pred, frame_lenth_cap = train+pred )
+save_to_pkl(DIR + "{}/".format(DATA)  + 'stream1_obs_data_{}.pkl'.format(TYPE), tr1)
+save_to_pkl(DIR + "{}/".format(DATA)  + 'stream1_pred_data_{}.pkl'.format(TYPE), pr1)
 
-# save_to_pkl(DIR + "{}/".format(DATA)  + 'stream1_obs_data_{}.pkl'.format(TYPE), tr1)
-# save_to_pkl(DIR + "{}/".format(DATA)  + 'stream1_pred_data_{}.pkl'.format(TYPE), pr1)
+tr2, pr2 = data_for_stream2(DATA_DIR, train_seq_len = train, pred_seq_len = pred, frame_lenth_cap = train+pred)
 
-# tr2, pr2 = data_for_stream2(DATA_DIR, train_seq_len = train, pred_seq_len = pred, frame_lenth_cap = train+pred)
-
-# save_to_pkl(DIR + "{}/".format(DATA)  + 'stream2_obs_data_{}.pkl'.format(TYPE), tr2)
-# save_to_pkl(DIR + "{}/".format(DATA)  + 'stream2_pred_data_{}.pkl'.format(TYPE), pr2)
+save_to_pkl(DIR + "{}/".format(DATA)  + 'stream2_obs_data_{}.pkl'.format(TYPE), tr2)
+save_to_pkl(DIR + "{}/".format(DATA)  + 'stream2_pred_data_{}.pkl'.format(TYPE), pr2)
 
 
 ## 
-tr_seq_2 = pickle.load(open('../resources/data/{}/{}'.format(DATA, NAME1), 'rb'))
+tr_seq_2 = pickle.load(open('resources/data/{}/{}'.format(DATA, NAME1), 'rb'))
 print('computing train eigens for {} {}...'.format(DATA, TYPE))
 eigs_train = compute_eigs(tr_seq_2, 'train')
 # save_to_pkl(DIR + 'stream2_obs_eigs_{}{}.pkl'.format(TYPE, len(eigs_train)), eigs_train)
@@ -365,7 +368,7 @@ save_to_pkl(DIR + "{}/".format(DATA)  + 'stream2_obs_eigs_{}.pkl'.format(TYPE), 
 del tr_seq_2
 del eigs_train
 
-pred_seq_2 = pickle.load(open('../resources/data/{}/{}'.format(DATA, NAME2), 'rb'))
+pred_seq_2 = pickle.load(open('resources/data/{}/{}'.format(DATA, NAME2), 'rb'))
 print('computing pred eigens for {} {}...'.format(DATA, TYPE))
 eigs_pred = compute_eigs(pred_seq_2, 'pred')
 #save_to_pkl(DIR + 'stream2_pred_eigs_{}{}.pkl'.format(TYPE, len(eigs_pred)), eigs_pred)
