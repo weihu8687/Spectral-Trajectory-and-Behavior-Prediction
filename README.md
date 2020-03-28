@@ -27,7 +27,6 @@ Since this is a research codebase and maintained by students, this repo is under
 are compiled [**here**](https://github.com/rohanchandra30/Spectral-Trajectory-and-Behavior-Prediction/wiki/Enhancements).
 
 ## Repo Details and Contents
----
 Python version: 3.7
 
 ### List of Trajectory Prediction Methods Implemented
@@ -88,7 +87,7 @@ The original GRIP implementation by the authors is provided [here](https://githu
 
 Note: During evaluation of the trained_models, the best results may be different from reported error due to different batch normalization applied to the network. To obtain the same number, we may have to mannually change the network.
 
-#### Resources folder structure
+Resources folder structure:
 * data -- input and output of stream 1 & 2 (This is directly avaiable in resources folder)
 * raw_data -- location of the raw data (put the downloaded dataset in this folder to process)
 * trained_model -- some saved models
