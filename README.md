@@ -25,45 +25,12 @@ Please cite our work if you found it useful.
 
 Since this is a research codebase and maintained by students, this repo is under active maintenance. Do let us know of any issues you may encounter and we will do our best to resolve them :) A list of known bugs with solutions is regularly maintained and compiled [**here**](https://github.com/rohanchandra30/Spectral-Trajectory-Prediction/wiki/Known-bugs), and optimizations/enhancements to the code
 are compiled [**here**](https://github.com/rohanchandra30/Spectral-Trajectory-and-Behavior-Prediction/wiki/Enhancements).
-## Instruction
 
+## Repo Details and Contents
+---
 Python version: 3.7
 
-### Installation
-
-1. Create a conda environement<br>
-  `conda env create -f env.yml`
-
-2. To activate the environment:<br>
-  `conda activate sc-glstm`
-
-3. Download resources <br>
-  `python setup.py`
-
-### Usage
-
-* To run our one & two stream model:<br>
-  1. `cd ours/`<br>
-  2. `python main.py`
-  3. To change between one stream to two stream, simply change the variable `s1` in main.py between True and False.
-  4. To change the model, change `DATA` and `SUFIX` variable in main.py.
-* To run EncDec comparison methods:<br>
-  1. `cd comparison_methods/EncDec/`<br>
-  2. `python main.py`
-  3. To change the model, change `DATA` and `SUFIX` variable in main.py.
-* To run GRIP comparison methods:<br>
-  1. `cd comparison_methods/GRIP/`<br>
-  2. `python main.py`
-  3. To change the model, change `DATA` and `SUFIX` variable in main.py.
-* To run TraPHic/SC-LSTM comparison methods:<br>
-  1. `cd comparison_methods/traphic_sconv/`
-  2. `python main.py`
-  3. To change the model and methods, change `DATASET` and `PREDALGO` variable in main.py.
-
-Note: During evaluation of the trained_models, the best results may be different from reported error due to different batch normalization applied to the network. To obtain the same number, we may have to mannually change the network.
-
 ### List of Trajectory Prediction Methods Implemented
-
 Please cite the methods below if you use them.
 
 * [**TraPHic: Trajectory Prediction in Dense and Heterogeneous Traffic Using Weighted Interactions**, CVPR'19](https://gamma.umd.edu/researchdirections/autonomousdriving/traphic/)<br>
@@ -86,14 +53,50 @@ The original GRIP implementation by the authors is provided [here](https://githu
 * [**Lyft Level 5**](https://level5.lyft.com/dataset/) (input length: 20 & output length: 30)
 
 
-### Resources folder structure
+## How to Run
+
+### Installation
+---
+1. Create a conda environement<br>
+  `conda env create -f env.yml`
+
+2. To activate the environment:<br>
+  `conda activate sc-glstm`
+
+3. Download resources <br>
+  `python setup.py`
+
+### Usage
+---
+* To run our one & two stream model:<br>
+  1. `cd ours/`<br>
+  2. `python main.py`
+  3. To change between one stream to two stream, simply change the variable `s1` in main.py between True and False.
+  4. To change the model, change `DATA` and `SUFIX` variable in main.py.
+* To run EncDec comparison methods:<br>
+  1. `cd comparison_methods/EncDec/`<br>
+  2. `python main.py`
+  3. To change the model, change `DATA` and `SUFIX` variable in main.py.
+* To run GRIP comparison methods:<br>
+  1. `cd comparison_methods/GRIP/`<br>
+  2. `python main.py`
+  3. To change the model, change `DATA` and `SUFIX` variable in main.py.
+* To run TraPHic/SC-LSTM comparison methods:<br>
+  1. `cd comparison_methods/traphic_sconv/`
+  2. `python main.py`
+  3. To change the model and methods, change `DATASET` and `PREDALGO` variable in main.py.
+
+Note: During evaluation of the trained_models, the best results may be different from reported error due to different batch normalization applied to the network. To obtain the same number, we may have to mannually change the network.
+
+#### Resources folder structure
 * data -- input and output of stream 1 & 2 (This is directly avaiable in resources folder)
 * raw_data -- location of the raw data (put the downloaded dataset in this folder to process)
 * trained_model -- some saved models
 
 
-### Data preparation steps for Argoverse, Lyft, and Apolloscape.
-Important steps if you plan to prepare the data from the raw data
+### Data Preparation.
+---
+Important steps if you plan to prepare the Argoverse, Lyft, and Apolloscape from the raw data available from their websites.
 
 #### Formatting the dataset after downloading from the official website
 * Run `data_processing/format_apolloscape.py` to format the downloaded apolloscape data into our desired representation
@@ -106,6 +109,7 @@ Important steps if you plan to prepare the data from the raw data
 * Must use `add_behaviors_stream2()` function in `data_processing/behaviors.py` to add behavior labels to the stream2 data before supplying the data to the network.
 
 ### Training and Testing on your own dataset
+---
 Our code supports any dataset that contains trajectory information. Follow the steps below to integrate your dataset with our code
 
 #### 1. Prepare your Dataset
