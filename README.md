@@ -92,7 +92,7 @@ The original GRIP implementation by the authors is provided [here](https://githu
 * trained_model -- some saved models
 
 
-### Data preparation steps
+### Data preparation steps for Argoverse, Lyft, and Apolloscape.
 Important steps if you plan to prepare the data from the raw data
 
 #### Formatting the dataset after downloading from the official website
@@ -105,9 +105,44 @@ Important steps if you plan to prepare the data from the raw data
 * Use `generate_adjacency()` function in `data_processing/behaviors.py` to generate adjacency matrices.
 * Must use `add_behaviors_stream2()` function in `data_processing/behaviors.py` to add behavior labels to the stream2 data before supplying the data to the network.
 
-### Plotting
+### Training and Testing on your own dataset
+Our code supports any dataset that contains trajectory information. Follow the steps below to integrate your dataset with our code
 
-* use the `plot_behaviors()` function in `data_processing/behaviors.py` to plot the behaviors of the agents.
+#### 1. Prepare your Dataset
+The first step is to prepare your dataset in our format which is a text file where each row will contain 'Frame ID', 'Agent_ID', 'X coordinate', 'Y Coordinate', 'Dataset_ID'.
+
+Make sure:
+- The Frame_ID's range between `1 to n`. And Agent_ID's also range from `1 to N`. `n` is total number of frames and `N` is total number of agents. If your dataset uses a different convention to represent the Frame_ID's (for example, few datasets use Time Stamp as Frame_ID), you need to map these ID's to `1 to n`. If your dataset uses a different convention to represent Agent_ID's (for example few datasets represent Agent_ID's using string of characters), you need to map these ID's to `1 to N`. 
+
+- If the Frame_ID's and Agent_ID's of your dataset are already in ranges of `1 to n` and `1 to N`, make sure they are sequential. Make sure there are no missing ID's. 
+
+<!--- The text file is formed in such a way that Frame_ID's are in increasing order, starting from 1 to n. To double check, if you have successfully formatted your data into our format, the first few rows will have repeated Frame_ID's. The corresponding Agent_ID's of these repeated Frame_ID's must not be repeating.-->   
+
+- Dataset_ID's are used to differentiate different scenes/sets of a same DATASET
+
+#### 2. Convert the text file to `.npy` format and save this as `TrainSet0.npy`.
+
+#### 3. Run the `data_stream.py` file in /data_processing. This will generate the pickle files needed to run the `main.py` files for any method.
+
+Mandatory precautions to take before running `data_stream.py`:
+
+- Make sure you have taken all the mandatory precautions mentioned above for preparing your data.
+
+- You must know the frame rate at which the trajectories of the vehicles are recorded. i.e., you must know how many frames does 1 second corresponds to? E.g. if the FPS is 2Hz, this means each second corresponds to 2 frames in the dataset.
+
+- You must set the `train_seq_len` and `pred_seq_len` in `data_stream.py` appropriately based on the frame rate. For example, if the frame rate is 2Hz, and if you want to consider 3 seconds as observation data, then `train_seq_len` would be `3*2 = 6`. if you want the to consider next 5 seconds as prediction data, then `pred_seq_len` would be `5*2 = 10`. Make sure `frame_lenth_cap >= (train_seq_len + pred_seq_len)`. We use this `frame_lenth_cap` to enforce that an `Agent_ID` is present/visible/seen in atleast `frame_lenth_cap` number of frames. 
+
+- If your data is too huge, you may want to consider only few scenes/sets from the whole data. Use the Dataset IDs (`D_id`) list to tweak the values and shorten the amount of data.
+
+- Assign a short keyword `XXXX` for naming your dataset.
+
+- Expect to see multiple files generated in the `./resources/DATA/XXXX/ ` with names starting with `stream1_obs_data_, stream1_pred_data_, stream2_obs_data_, stream2_pred_data_,stream2_obs_eigs_, stream2_pred_eigs_`.
+
+#### 4. Then run the `main.py` file of any method.
+
+<!--### Plotting
+
+* use the `plot_behaviors()` function in `data_processing/behaviors.py` to plot the behaviors of the agents.-->
 
 ## Our network
 
@@ -115,7 +150,7 @@ Important steps if you plan to prepare the data from the raw data
 <img src="figures/network.png">
 </p>
 
-## Comparison with other models
+<!--## Comparison with other models
 ![comparison of our methods with other methods](figures/compare.png)
 
 ## Results
@@ -127,5 +162,5 @@ Important steps if you plan to prepare the data from the raw data
 <p align="center">
   <img src="figures/behaviors.png">
 </p>
-
+-->
 
