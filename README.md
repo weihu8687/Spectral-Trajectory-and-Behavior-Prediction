@@ -30,10 +30,10 @@ Table of Contents
 =================
 
   * [Paper - <a href="https://obj.umiacs.umd.edu/gamma-umd-website-imgs/pdfs/autonomousdriving/spectralcows_full.pdf" rel="nofollow"><strong>Forecasting Trajectory and Behavior of Road-Agents Using Spectral Clustering in Graph-LSTMs</strong></a>](#paper---forecasting-trajectory-and-behavior-of-road-agents-using-spectral-clustering-in-graph-lstms)
-  * [Repo Details and Contents](#repo-details-and-contents)
+  * [**Repo Details and Contents**](#repo-details-and-contents)
      * [List of Trajectory Prediction Methods Implemented](#list-of-trajectory-prediction-methods-implemented)
      * [Datasets](#datasets)
-  * [How to Run](#how-to-run)
+  * [**How to Run**](#how-to-run)
      * [Installation](#installation)
      * [Usage](#usage)
      * [Data Preparation.](#data-preparation)
@@ -44,7 +44,7 @@ Table of Contents
         * [2. Convert the text file to .npy format and save this as TrainSet0.npy.](#2-convert-the-text-file-to-npy-format-and-save-this-as-trainset0npy)
         * [3. Run the data_stream.py file in /data_processing. This will generate the pickle files needed to run the main.py files for any method.](#3-run-the-data_streampy-file-in-data_processing-this-will-generate-the-pickle-files-needed-to-run-the-mainpy-files-for-any-method)
         * [4. Then run the main.py file of any method.](#4-then-run-the-mainpy-file-of-any-method)
-  * [Our network](#our-network)
+  * [**Our network**](#our-network)
 
 ## Repo Details and Contents
 Python version: 3.7
