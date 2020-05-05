@@ -173,11 +173,14 @@ Mandatory precautions to take before running `data_stream.py`:
 <img src="figures/network.png">
 </p>
 
-<!--## Comparison with other models
+## Comparison with other models
 ![comparison of our methods with other methods](figures/compare.png)
 
 ## Results
 
+**Important** - Please note that the current results produced by the code are normalized RMSE values and not in meters. 
+
+<!--
 ### Trajectory Prediction Result
 ![Trajectory Prediction Result](figures/spectral_cluster_regularization.png)
 
