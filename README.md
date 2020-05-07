@@ -26,6 +26,9 @@ Please cite our work if you found it useful.
 Since this is a research codebase and maintained by students, this repo is under active maintenance. Do let us know of any issues you may encounter and we will do our best to resolve them :) A list of known bugs with solutions is regularly maintained and compiled [**here**](https://github.com/rohanchandra30/Spectral-Trajectory-Prediction/wiki/Known-bugs), and optimizations/enhancements to the code
 are compiled [**here**](https://github.com/rohanchandra30/Spectral-Trajectory-and-Behavior-Prediction/wiki/Enhancements).
 
+**Important** - Please note that the current results produced by the code are normalized RMSE values and not in meters. 
+
+
 Table of Contents
 =================
 
@@ -172,10 +175,6 @@ Mandatory precautions to take before running `data_stream.py`:
 <p align="center">
 <img src="figures/network.png">
 </p>
-
-## Results
-
-**Important** - Please note that the current results produced by the code are normalized RMSE values and not in meters. 
 
 <!--
 ### Trajectory Prediction Result
