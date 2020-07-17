@@ -9,11 +9,12 @@ Project Page - https://gamma.umd.edu/spectralcows
 Please cite our work if you found it useful.
 
 ```
-@article{chandra2019forecasting,
-  title={Forecasting Trajectory and Behavior of Road-Agents Using Spectral Clustering in Graph-LSTMs},
+@article{chandra2020forecasting,
+  title={Forecasting trajectory and behavior of road-agents using spectral clustering in graph-lstms},
   author={Chandra, Rohan and Guan, Tianrui and Panuganti, Srujan and Mittal, Trisha and Bhattacharya, Uttaran and Bera, Aniket and Manocha, Dinesh},
-  journal={arXiv preprint arXiv:1912.01118},
-  year={2019}
+  journal={IEEE Robotics and Automation Letters},
+  year={2020},
+  publisher={IEEE}
 }
 ```
 
