@@ -24,10 +24,7 @@ Please cite our work if you found it useful.
 <img src="figures/behavior.gif" width="260">
 </p>
 
-This repo is no longer under active maintenance. A list of known bugs with solutions is regularly maintained and compiled [**here**](https://github.com/rohanchandra30/Spectral-Trajectory-Prediction/wiki/Known-bugs), and optimizations/enhancements to the code
-are compiled [**here**](https://github.com/rohanchandra30/Spectral-Trajectory-and-Behavior-Prediction/wiki/Enhancements).
-
-**Important** - Please note that the current results produced by the code are normalized RMSE values and not in meters. Further, the trianed models provided by in this codebase may not reflect the results in the main paper.
+**Important** - This repo is no longer under active maintenance. Also, please note that the current results produced by the code are normalized RMSE values and not in meters. Furthermore, the trained models provided by in this codebase may not reflect the results in the main paper.
 
 
 Table of Contents
