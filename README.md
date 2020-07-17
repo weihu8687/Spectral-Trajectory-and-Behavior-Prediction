@@ -2,7 +2,7 @@
 <br>
 ![](https://img.shields.io/github/issues/rohanchandra30/Spectral-Trajectory-Prediction?color=brightgreen&style=plastic)![](https://img.shields.io/github/stars/rohanchandra30/Spectral-Trajectory-Prediction?color=cyan&style=plastic)![](https://img.shields.io/github/forks/rohanchandra30/Spectral-Trajectory-Prediction?color=blue&style=plastic)
 
-### Paper - [**Forecasting Trajectory and Behavior of Road-Agents Using Spectral Clustering in Graph-LSTMs**](https://obj.umiacs.umd.edu/gamma-umd-website-imgs/pdfs/autonomousdriving/spectralcows_full.pdf)
+### Paper - [**Forecasting Trajectory and Behavior of Road-Agents Using Spectral Clustering in Graph-LSTMs**](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9126166)
 
 Project Page - https://gamma.umd.edu/spectralcows
 
