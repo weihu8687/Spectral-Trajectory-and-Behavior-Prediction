@@ -8,8 +8,12 @@ class TraphicEngine(TrajPredEngine):
     TODO:maneuver metrics, too much duplicate code with socialEngine
     """
 
-    def __init__(self, net, optim, train_loader, val_loader, args):
-        super().__init__(net, optim, train_loader, val_loader, args)
+   # def __init__(self, net, optim, train_loader, val_loader, args):
+   #     super().__init__(net, optim, train_loader, val_loader, args)
+   #     self.save_name = "traphic"
+
+    def __init__(self, net, optim, args):
+        super().__init__(net, optim, args)
         self.save_name = "traphic"
 
     def netPred(self, batch):

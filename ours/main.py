@@ -9,25 +9,28 @@ from def_train_eval import *
 import pickle            
 
 
-DATA = 'OTH'
-SUFIX = '1stS15-5'
+#DATA = 'OTH'
+#SUFIX = '1stS15-5'
+#train_seq_len = 5
+#pred_seq_len = 20
 
+DATA = 'LYFT'
+SUFIX = '1stS1new'
+train_seq_len = 20
+pred_seq_len = 30
 
-device = torch.device("cuda")
+device = torch.device("cuda:0")
 s2 = True
-TRAIN = True
+TRAIN = False
 EVAL = True
 
 
-DIR = 'resources/data/{}/'.format(DATA)
-MODEL_DIR = 'resources/trained_models/'
+DIR = '../resources/data/{}/'.format(DATA)
+MODEL_DIR = '../resources/trained_models/'
 
 epochs = 100
 
 save_per_epochs = 5
-
-train_seq_len = 5
-pred_seq_len = 20
 
 
 if __name__ == "__main__":
@@ -85,5 +88,6 @@ if __name__ == "__main__":
 
 
 
-
-        eval(10, tr_seq_1, pred_seq_1, DATA, SUFIX)
+        for eval_iter in range(10000):
+            print('eval_iter {}'.format(eval_iter))
+            eval(10, tr_seq_1, pred_seq_1, DATA, SUFIX)

@@ -194,8 +194,8 @@ class TnpModel:
         d = os.path.join(self.args['modelLoc'], self.args['name'])
 
         if os.path.exists(d):
-            self.net.load_state_dict(torch.load(d))
             print("\n[INFO]: model {} loaded".format(d))
+            self.net.load_state_dict(torch.load(d, map_location='cuda:0'))
         else:
             print("\n[INFO]: can not find model at {} to evaluate, using existing net".format(d))
 
@@ -233,19 +233,21 @@ class TnpModel:
         valSet_path = os.path.join(self.args["dir"], "valSet")
         tstSet_path = os.path.join(self.args["dir"], "testSet")
 
-        trSet = ngsimDataset(trSet_path, self.args["dir"], self.args["raw_dir"], 'train', self.args['dsId'], t_h=self.args['in_length'], t_f=self.args['out_length'])
-        trDataloader = DataLoader(trSet,batch_size=self.args['batch_size'],shuffle=True,num_workers=8,collate_fn=trSet.collate_fn)
+        #trSet = ngsimDataset(trSet_path, self.args["dir"], self.args["raw_dir"], 'train', self.args['dsId'], t_h=self.args['in_length'], t_f=self.args['out_length'])
+        #trDataloader = DataLoader(trSet,batch_size=self.args['batch_size'],shuffle=True,num_workers=8,collate_fn=trSet.collate_fn)
 
-        testSet = ngsimDataset(valSet_path, self.args["dir"], self.args["raw_dir"], 'val', self.args['dsId'], t_h=self.args['in_length'], t_f=self.args['out_length'])
+        #testSet = ngsimDataset(tstSet_path, self.args["dir"], self.args["raw_dir"], 'test', self.args['dsId'], t_h=self.args['in_length'], t_f=self.args['out_length'])
+        testSet = ngsimDataset(tstSet_path, self.args["dir"], self.args["raw_dir"], 'test', 2, t_h=self.args['in_length'], t_f=self.args['out_length'])
         testDataloader = DataLoader(testSet,batch_size=self.args['batch_size'],shuffle=True,num_workers=8,collate_fn=testSet.collate_fn)
 
-        valSet = ngsimDataset(tstSet_path, self.args["dir"], self.args["raw_dir"], 'val', self.args['dsId'], t_h=self.args['in_length'], t_f=self.args['out_length'])
-        valDataloader = DataLoader(valSet,batch_size=self.args['batch_size'],shuffle=True,num_workers=8,collate_fn=valSet.collate_fn)
+        #valSet = ngsimDataset(valSet_path, self.args["dir"], self.args["raw_dir"], 'val', self.args['dsId'], t_h=self.args['in_length'], t_f=self.args['out_length'])
+        #valDataloader = DataLoader(valSet,batch_size=self.args['batch_size'],shuffle=True,num_workers=8,collate_fn=valSet.collate_fn)
 
         print('start testing {}...'.format(self.args["predAlgo"]))
-        if self.args["predAlgo"] == "Traphic":
-            engine = TraphicEngine(self.net, optim, trDataloader, valDataloader, self.args)
-        else:
-            engine = SocialEngine(self.net, optim, trDataloader, valDataloader, self.args)
+        #if self.args["predAlgo"] == "Traphic":
+        engine = TraphicEngine(self.net, optim, self.args)
+            #engine = TraphicEngine(self.net, optim, trDataloader, valDataloader, self.args)
+        #else:
+            #engine = SocialEngine(self.net, optim, trDataloader, valDataloader, self.args)
 
         engine.eval(testDataloader)

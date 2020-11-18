@@ -1,10 +1,10 @@
 import multiprocessing
 import subprocess
-from format_argo import argo_to_formatted, create_data
+from format_argo import merge, argo_to_formatted, create_data
 import argparse
 import numpy as np
 import os
-from model.import_data import merge
+#from model.import_data import merge
 from collections import defaultdict
 import pickle
 from klepto.archives import dir_archive
@@ -13,7 +13,6 @@ RAW_DATA = "./resources/raw_data/ARGO"
 DATA_DIR = './resources/data/ARGO'
 
 THREAD = 30
-
 
 def single(input_dir, data_dir, dtype):
 
@@ -140,7 +139,7 @@ if __name__ == '__main__':
 
 	args = parser.parse_args()
 
-	# dtype = args.set
+	dtype = args.set
 	# pool = multiprocessing.Pool(processes=THREAD)
 	# cmds = []
 

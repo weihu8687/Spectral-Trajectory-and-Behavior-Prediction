@@ -28,7 +28,7 @@ warnings.filterwarnings("ignore")
 
 # dataset dirs
 DATASET = 'ARGO'
-# DATASET = 'LYFT'
+#DATASET = 'LYFT'
 # DATASET = 'APOL'
 LOG = './logs/'
 # LOAD = 'Traphic_LYFT_model_30-50l_12em.tar'

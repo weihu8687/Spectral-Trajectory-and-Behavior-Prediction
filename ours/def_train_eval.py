@@ -14,10 +14,10 @@ import matplotlib.pyplot as plt
 from scipy.sparse.linalg import eigs
 from torch.autograd import Variable
 
-device = torch.device("cuda")
-BATCH_SIZE=128
+device = torch.device("cuda:0")
+BATCH_SIZE=64
 MU = 5
-MODEL_LOC = 'resources/trained_models/Ours/{}'
+MODEL_LOC = '../resources/trained_models/Ours/{}'
 
 
 def load_batch(index, size, seq_ID, train_sequence_stream1, pred_sequence_stream_1, train_sequence_stream2, pred_sequence_stream2, train_eig_seq, pred_eig_seq):
@@ -183,11 +183,14 @@ def trainIters(n_epochs, train_dataloader, valid_dataloader, train2_dataloader,v
     return encoder_stream1, decoder_stream1
 
 def eval(epochs, tr_seq_1, pred_seq_1, data, sufix, learning_rate=1e-3, loc=MODEL_LOC):
-    
+
     encoder_stream1 = None
     decoder_stream1 = None
     encoder_stream2 = None
     decoder_stream2 = None
+
+    #for eval_iter in range(10):
+    #    print('eval_iter {}'.format(eval_iter))
 
     encoder1loc = os.path.join(loc.format(data), 'encoder_stream1_{}{}.pt'.format(data, sufix))
     decoder1loc = os.path.join(loc.format(data), 'decoder_stream1_{}{}.pt'.format(data, sufix))
@@ -208,17 +211,19 @@ def eval(epochs, tr_seq_1, pred_seq_1, data, sufix, learning_rate=1e-3, loc=MODE
     hidden_dim = fea_size
     output_dim = fea_size
 
+    t1 = time.time()
     encoder_stream1 = Encoder ( input_dim , hidden_dim , output_dim ).to ( device )
     decoder_stream1 = Decoder ( 's1' , input_dim , hidden_dim , output_dim, batch_size, step_size ).to ( device )
     encoder_stream1_optimizer = optim.RMSprop(encoder_stream1.parameters(), lr=learning_rate)
     decoder_stream1_optimizer = optim.RMSprop(decoder_stream1.parameters(), lr=learning_rate)
-    encoder_stream1.load_state_dict(torch.load(encoder1loc))
-    encoder_stream1.eval()       
-    decoder_stream1.load_state_dict(torch.load(decoder1loc))        
+    encoder_stream1.load_state_dict(torch.load(encoder1loc, map_location='cuda:0'))
+    encoder_stream1.eval()
+    decoder_stream1.load_state_dict(torch.load(decoder1loc, map_location='cuda:0'))
     decoder_stream1.eval()
+    t2 = time.time()
+    print("EncDec time:{}".format(t2 - t1))
 
-    
-    compute_accuracy_stream1(tr_seq_1, pred_seq_1, encoder_stream1, decoder_stream1, epochs) 
+    #compute_accuracy_stream1(tr_seq_1, pred_seq_1, encoder_stream1, decoder_stream1, epochs)
 
 
 

@@ -4,7 +4,9 @@ from def_train_eval import *
 from data_stream import *
 import pickle              # import module first
 
-DATA = 'APOL'
+#DATA = 'LYFT'
+#SUFIX = 'notrain'
+DATA = 'NGSIM'
 SUFIX = '1st'
 TRAIN = False
 EVAL = True 

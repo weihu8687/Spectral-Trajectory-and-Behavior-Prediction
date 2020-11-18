@@ -9,18 +9,20 @@ from tensorboardX import SummaryWriter
 
 class TrajPredEngine:
 
-    def __init__(self, net, optim, train_loader, val_loader, args):
+    #def __init__(self, net, optim, train_loader, val_loader, args):
+    def __init__(self, net, optim, args):
         self.net = net
         self.args = args
         self.pretrainEpochs = args["pretrainEpochs"]
         self.trainEpochs = args["trainEpochs"]
         self.optim = optim
-        self.train_loader = train_loader
-        self.val_loader = val_loader
+        #self.train_loader = train_loader
+        #self.val_loader = val_loader
         self.cuda = args['cuda']
         self.device = args['device']
         self.dsId = self.args['dsId']
-        self.n_iterations = max(len(train_loader), len(train_loader) / args["batch_size"])
+        #self.n_iterations = max(len(train_loader), len(train_loader) / args["batch_size"])
+        self.n_iterations = 10 #max(len(train_loader), len(train_loader) / args["batch_size"])
 
         ## training metrics to keep track of, consider making a metrics class
         # remember to 0 these out
@@ -160,22 +162,23 @@ class TrajPredEngine:
         return fut_pred, fut
 
     def validate(self, engine):
-        self.evaluator.run(self.val_loader)
-        max_epochs =self.args["pretrainEpochs"] + self.args["trainEpochs"]
-
-        # if not self.eval_only:
-        print("{}/{} Epochs in dataset{}".format(engine.state.epoch, max_epochs, self.dsId))
-        # print(max((engine.state.epoch / max_epochs) * 100,1))
-        print("EPOCH {}: Train loss: {}  Val loss: {}\n".format(engine.state.epoch, self.metrics["Avg train loss"], self.metrics["Avg val loss"]))
-        # else:
-        #     print("EPOCH {}: Test loss: {}\n".format(engine.state.epoch, self.metrics["Avg val loss"]))
-        
-        if self.writer:
-            self.writer.add_scalar("training_avg_loss", self.metrics['Avg train loss'], engine.state.epoch)
-            self.writer.add_scalar("validating_avg_loss", self.metrics['Avg val loss'], engine.state.epoch)
-
-        self.metrics["Avg train loss"] = 0
-        self.metrics["Avg val loss"] = 0
+        print("validate is called, do nothing")
+#        self.evaluator.run(self.val_loader)
+#        max_epochs =self.args["pretrainEpochs"] + self.args["trainEpochs"]
+#
+#        # if not self.eval_only:
+#        print("{}/{} Epochs in dataset{}".format(engine.state.epoch, max_epochs, self.dsId))
+#        # print(max((engine.state.epoch / max_epochs) * 100,1))
+#        print("EPOCH {}: Train loss: {}  Val loss: {}\n".format(engine.state.epoch, self.metrics["Avg train loss"], self.metrics["Avg val loss"]))
+#        # else:
+#        #     print("EPOCH {}: Test loss: {}\n".format(engine.state.epoch, self.metrics["Avg val loss"]))
+#
+#        if self.writer:
+#            self.writer.add_scalar("training_avg_loss", self.metrics['Avg train loss'], engine.state.epoch)
+#            self.writer.add_scalar("validating_avg_loss", self.metrics['Avg val loss'], engine.state.epoch)
+#
+#        self.metrics["Avg train loss"] = 0
+#        self.metrics["Avg val loss"] = 0
 
     def zeroMetrics(self, engine):
         self.val_batch_count = 1
@@ -214,29 +217,32 @@ class TrajPredEngine:
         return writer
 
     def start(self):
-        max_epochs =self.args["pretrainEpochs"] + self.args["trainEpochs"]
+        print("start is called, do nothing")
 
-        if self.tensorboard:
-            self.writer = self.create_summary_writer(self.net, self.train_loader, self.log_dir)
-
-
-#        @self.trainer.on(Events.ITERATION_COMPLETED)
-#        def log_training_loss(engine):
-#            iter = (engine.state.iteration - 1) % len(self.train_loader) + 1
-#            if iter % 10 == 0:
-#                self.writer.add_scalar("training/loss", engine.state.output, engine.state.iteration)
-
-        # if not self.eval_only:
-        self.trainer.run(self.train_loader, max_epochs=max_epochs)
-        # else:
-            # self.trainer.run(self.train_loader, max_epochs=1)
-
-        if self.tensorboard:
-            self.writer.close()
-
+#        max_epochs =self.args["pretrainEpochs"] + self.args["trainEpochs"]
+#
+#        if self.tensorboard:
+#            self.writer = self.create_summary_writer(self.net, self.train_loader, self.log_dir)
+#
+#
+#        #        @self.trainer.on(Events.ITERATION_COMPLETED)
+#        #        def log_training_loss(engine):
+#        #            iter = (engine.state.iteration - 1) % len(self.train_loader) + 1
+#        #            if iter % 10 == 0:
+#        #                self.writer.add_scalar("training/loss", engine.state.output, engine.state.iteration)
+#
+#        # if not self.eval_only:
+#        self.trainer.run(self.train_loader, max_epochs=max_epochs)
+#        # else:
+#            # self.trainer.run(self.train_loader, max_epochs=1)
+#
+#        if self.tensorboard:
+#            self.writer.close()
+#
 
     def test_a_batch(self, engine, batch):
         _, _, _, _, _, _, _, fut, op_mask, _, _, _, _ = batch
+
 
         # Initialize Variables
         if self.cuda:
@@ -277,6 +283,9 @@ class TrajPredEngine:
 
 
         self.test_batch_size = len(test_loader)
+
+        print('test_batch_size {}'.format(self.test_batch_size))
+
         tester = Engine(self.test_a_batch)
 
         pbar = ProgressBar(persist=True, postfix=self.metrics)
