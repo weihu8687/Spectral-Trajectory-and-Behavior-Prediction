@@ -14,7 +14,7 @@ import pickle
 #train_seq_len = 5
 #pred_seq_len = 20
 
-DATA = 'LYFT'
+DATA = 'ARGO'
 SUFIX = '1stS1new'
 train_seq_len = 20
 pred_seq_len = 30
@@ -88,6 +88,6 @@ if __name__ == "__main__":
 
 
 
-        for eval_iter in range(10000):
+        for eval_iter in range(10):
             print('eval_iter {}'.format(eval_iter))
             eval(10, tr_seq_1, pred_seq_1, DATA, SUFIX)

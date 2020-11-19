@@ -15,10 +15,15 @@ from scipy.sparse.linalg import eigs
 from torch.autograd import Variable
 
 device = torch.device("cuda:0")
-BATCH_SIZE=64
+BATCH_SIZE=128
 MU = 5
 MODEL_LOC = '../resources/trained_models/Ours/{}'
 
+train_seq_len = 20
+pred_seq_len = 30
+
+MANUAL_BREAK = True
+fake_dup_points = 5
 
 def load_batch(index, size, seq_ID, train_sequence_stream1, pred_sequence_stream_1, train_sequence_stream2, pred_sequence_stream2, train_eig_seq, pred_eig_seq):
     '''
@@ -205,8 +210,11 @@ def eval(epochs, tr_seq_1, pred_seq_1, data, sufix, learning_rate=1e-3, loc=MODE
     batch = load_batch ( 0 , BATCH_SIZE , 'pred' , train_raw , pred_raw , [], [], [], [] )
     batch , _, _ = batch
     batch_in_form = np.asarray ( [ batch[ i ][ 'sequence' ] for i in range ( BATCH_SIZE ) ] )
+    #print('batch_in_form {}'.format(batch_in_form))
     batch_in_form = torch.Tensor ( batch_in_form )
+    #print('batch_in_form.torch {}'.format(batch_in_form))
     [ batch_size , step_size , fea_size ] = np.shape(batch_in_form)
+    #print('batch_size {} step_size {} fea_size {}'.format(batch_size , step_size , fea_size))
     input_dim = fea_size
     hidden_dim = fea_size
     output_dim = fea_size
@@ -221,9 +229,9 @@ def eval(epochs, tr_seq_1, pred_seq_1, data, sufix, learning_rate=1e-3, loc=MODE
     decoder_stream1.load_state_dict(torch.load(decoder1loc, map_location='cuda:0'))
     decoder_stream1.eval()
     t2 = time.time()
-    print("EncDec time:{}".format(t2 - t1))
+    print("EncDec init time:{}".format(t2 - t1))
 
-    #compute_accuracy_stream1(tr_seq_1, pred_seq_1, encoder_stream1, decoder_stream1, epochs)
+    compute_accuracy_stream1(tr_seq_1, pred_seq_1, encoder_stream1, decoder_stream1, epochs)
 
 
 
@@ -438,13 +446,30 @@ def compute_accuracy_stream1(traindataloader, labeldataloader, encoder, decoder,
             print("{}/{} in computing accuracy...".format(epoch, n_epochs))
         trainbatch_both = load_batch ( epoch , BATCH_SIZE , 'train' , train_raw , pred_raw, train2_raw, pred2_raw, [], [] )
         trainbatch, trainbatch2, _ = trainbatch_both
-        trainbatch_in_form = np.asarray([trainbatch[i]['sequence'] for i in range(len(trainbatch))])
+
+        trainbatch_in_form = np.zeros((batch_size, train_seq_len, fea_size))
+
+        print('len_train_batch {}'.format(len(trainbatch)))
+        if MANUAL_BREAK:
+            for i in range(len(trainbatch)):
+                train_array =  np.asarray(trainbatch[i]['sequence'])
+                #print('train_array {}'.format(train_array))
+
+                fake_array = [train_array[fake_dup_points, :],] * fake_dup_points
+                #print('fake_array {}'.format(fake_array))
+                train_array[:fake_dup_points, :] = fake_array
+                trainbatch_in_form[i, :, :] = train_array
+        else:
+            trainbatch_in_form = np.asarray([trainbatch[i]['sequence'] for i in range(len(trainbatch))])
+
+        #print('trainbatch_in_form {}'.format(trainbatch_in_form))
         trainbatch_in_form = torch.Tensor ( trainbatch_in_form )
 
         testbatch_both = load_batch ( epoch , BATCH_SIZE , 'pred' , train_raw , pred_raw, train2_raw, pred2_raw, [], [] )
         testbatch, testbatch2, _  = testbatch_both
         testbatch_in_form = np.asarray([testbatch[i]['sequence'] for i in range(len(trainbatch))])
         testbatch_in_form = torch.Tensor ( testbatch_in_form )
+        #print('testbatch_in_form {}'.format(testbatch_in_form))
 
         train = trainbatch_in_form.to(device)
         label = testbatch_in_form.to(device)
