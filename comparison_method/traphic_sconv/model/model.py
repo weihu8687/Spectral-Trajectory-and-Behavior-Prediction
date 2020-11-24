@@ -232,12 +232,14 @@ class TnpModel:
         trSet_path = os.path.join(self.args["dir"], "trainSet")
         valSet_path = os.path.join(self.args["dir"], "valSet")
         tstSet_path = os.path.join(self.args["dir"], "testSet")
+        print('tstSet_path {}'.format(tstSet_path))
+        print('raw_dir {}'.format(self.args["raw_dir"]))
 
         #trSet = ngsimDataset(trSet_path, self.args["dir"], self.args["raw_dir"], 'train', self.args['dsId'], t_h=self.args['in_length'], t_f=self.args['out_length'])
         #trDataloader = DataLoader(trSet,batch_size=self.args['batch_size'],shuffle=True,num_workers=8,collate_fn=trSet.collate_fn)
 
         #testSet = ngsimDataset(tstSet_path, self.args["dir"], self.args["raw_dir"], 'test', self.args['dsId'], t_h=self.args['in_length'], t_f=self.args['out_length'])
-        testSet = ngsimDataset(tstSet_path, self.args["dir"], self.args["raw_dir"], 'test', 2, t_h=self.args['in_length'], t_f=self.args['out_length'])
+        testSet = ngsimDataset(tstSet_path, self.args["dir"], self.args["raw_dir"], 'test', 29, t_h=self.args['in_length'], t_f=self.args['out_length'])
         testDataloader = DataLoader(testSet,batch_size=self.args['batch_size'],shuffle=True,num_workers=8,collate_fn=testSet.collate_fn)
 
         #valSet = ngsimDataset(valSet_path, self.args["dir"], self.args["raw_dir"], 'val', self.args['dsId'], t_h=self.args['in_length'], t_f=self.args['out_length'])

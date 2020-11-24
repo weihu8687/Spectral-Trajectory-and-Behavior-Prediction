@@ -15,7 +15,7 @@ from scipy.sparse.linalg import eigs
 from torch.autograd import Variable
 
 device = torch.device("cuda:0")
-BATCH_SIZE=128
+BATCH_SIZE=16
 MU = 5
 MODEL_LOC = '../resources/trained_models/Ours/{}'
 
@@ -23,7 +23,7 @@ train_seq_len = 20
 pred_seq_len = 30
 
 MANUAL_BREAK = True
-fake_dup_points = 5
+fake_dup_points = 15
 
 def load_batch(index, size, seq_ID, train_sequence_stream1, pred_sequence_stream_1, train_sequence_stream2, pred_sequence_stream2, train_eig_seq, pred_eig_seq):
     '''
@@ -421,12 +421,14 @@ def compute_A ( frame ):
             A[ i ][ neighbor ] = 1
     return A
 
+def slope (x1, y1, x2, y2):
+    m = (y2-y1)/(x2-x1)
+    return m
 
 def compute_accuracy_stream1(traindataloader, labeldataloader, encoder, decoder, n_epochs):
     ade = 0
     fde = 0
     count = 0
-
 
     train_raw = traindataloader
     pred_raw = labeldataloader
@@ -439,7 +441,7 @@ def compute_accuracy_stream1(traindataloader, labeldataloader, encoder, decoder,
     batch_in_form = torch.Tensor(batch_in_form)
     [ batch_size , step_size , fea_size ] = np.shape(batch_in_form)
 
-    print('computing accuracy...')
+    print('computing accuracy... epochs {}'.format(n_epochs))
     for epoch in range(0, n_epochs):
         # Prepare train and test batch
         if epoch % (int(n_epochs/10) + 1) == 0:
@@ -448,26 +450,71 @@ def compute_accuracy_stream1(traindataloader, labeldataloader, encoder, decoder,
         trainbatch, trainbatch2, _ = trainbatch_both
 
         trainbatch_in_form = np.zeros((batch_size, train_seq_len, fea_size))
+        testbatch_in_form = np.zeros((batch_size, pred_seq_len, fea_size))
 
-        print('len_train_batch {}'.format(len(trainbatch)))
+        curve_case_num = 0
+        last_curve_id = 0
+        curve_array = np.zeros((train_seq_len, fea_size))
+        curve_case_list = []
+
+        #print('+++++++++++++++++++++++++len_train_batch {}'.format(len(trainbatch)))
         if MANUAL_BREAK:
             for i in range(len(trainbatch)):
                 train_array =  np.asarray(trainbatch[i]['sequence'])
                 #print('train_array {}'.format(train_array))
 
-                fake_array = [train_array[fake_dup_points, :],] * fake_dup_points
-                #print('fake_array {}'.format(fake_array))
-                train_array[:fake_dup_points, :] = fake_array
-                trainbatch_in_form[i, :, :] = train_array
+                start_pt = train_array[0, :]
+                mid_pt = train_array[9, :]
+                end_pt = train_array[19, :]
+
+                first_half_slope = slope(start_pt[0], start_pt[1], mid_pt[0], mid_pt[1])
+                second_half_slope = slope(mid_pt[0], mid_pt[1], end_pt[0], end_pt[1])
+
+                #print('first_half slope {}'.format(first_half_slope))
+                #print('second_half slop {}'.format(second_half_slope))
+                #print('delta_x {} delta_y {}'.format(abs(start_pt[0] - end_pt[0]), abs(start_pt[1] - end_pt[1])))
+
+                #if ( abs(start_pt[0] - end_pt[0]) > 5.0 and abs(start_pt[1] - end_pt[1]) > 5.0  and \
+                #     abs(first_half_slope - second_half_slope) > 2.0 ):
+                if ( abs(start_pt[0] - end_pt[0]) > 5.0 and abs(start_pt[1] - end_pt[1]) > 5.0 ):
+                    print('start_pt {}'.format(start_pt))
+                    print('mid_pt {}'.format(mid_pt))
+                    print('end_pt {}'.format(end_pt))
+
+                    fake_array = [train_array[fake_dup_points, :],] * fake_dup_points
+                    #print('fake_array {}'.format(fake_array))
+                    train_array[:fake_dup_points, :] = fake_array
+                    trainbatch_in_form[curve_case_num, :, :] = train_array
+                    curve_case_num += 1
+                    curve_array = train_array
+                    curve_case_list.append(i)
+                    last_curve_id = i
+
+            if curve_case_num == 0:
+                continue
+
+            #print('append cases num {}'.format(len(trainbatch) - curve_case_num))
+            #print('curve_array {}'.format(curve_array))
+
+            for i in range(curve_case_num, len(trainbatch)):
+                trainbatch_in_form[i, :, :] = curve_array
+                if curve_case_num > 0:
+                    curve_case_list.append(last_curve_id)
         else:
             trainbatch_in_form = np.asarray([trainbatch[i]['sequence'] for i in range(len(trainbatch))])
 
+        #print('curve_case_list len {}, {}'.format(len(curve_case_list), curve_case_list))
         #print('trainbatch_in_form {}'.format(trainbatch_in_form))
         trainbatch_in_form = torch.Tensor ( trainbatch_in_form )
 
         testbatch_both = load_batch ( epoch , BATCH_SIZE , 'pred' , train_raw , pred_raw, train2_raw, pred2_raw, [], [] )
         testbatch, testbatch2, _  = testbatch_both
-        testbatch_in_form = np.asarray([testbatch[i]['sequence'] for i in range(len(trainbatch))])
+        if MANUAL_BREAK:
+            for i in range(len(curve_case_list)):
+                test_array = np.asarray(testbatch[curve_case_list[i]]['sequence'])
+                testbatch_in_form[i, :, :] = test_array
+        else:
+            testbatch_in_form = np.asarray([testbatch[i]['sequence'] for i in range(len(trainbatch))])
         testbatch_in_form = torch.Tensor ( testbatch_in_form )
         #print('testbatch_in_form {}'.format(testbatch_in_form))
 

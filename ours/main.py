@@ -88,6 +88,6 @@ if __name__ == "__main__":
 
 
 
-        for eval_iter in range(10):
-            print('eval_iter {}'.format(eval_iter))
-            eval(10, tr_seq_1, pred_seq_1, DATA, SUFIX)
+        #for eval_iter in range(10):
+        #    print('eval_iter {}'.format(eval_iter))
+        eval(10, tr_seq_1, pred_seq_1, DATA, SUFIX)

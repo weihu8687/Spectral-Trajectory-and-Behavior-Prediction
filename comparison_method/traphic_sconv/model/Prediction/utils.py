@@ -71,8 +71,10 @@ class ngsimDataset(Dataset):
         # self.T = t[0]
 
         d= np.load(os.path.join(self.data_dir, self.dtype, "{}Set{}-traj.npy".format(self.dtype, self.dset)), allow_pickle=True)
+        print('print d data from {}'.format(os.path.join(self.data_dir, self.dtype, "{}Set{}-traj.npy".format(self.dtype, self.dset))))
         self.D = d[0]
         t = np.load(os.path.join(self.data_dir, self.dtype, "{}Set{}-track.npy".format(self.dtype, self.dset)), allow_pickle=True)
+        print('print t data from {}'.format(os.path.join(self.data_dir, self.dtype, "{}Set{}-track.npy".format(self.dtype, self.dset))))
         self.T = t[0]
 
         # for ids in self.D[:,1]:

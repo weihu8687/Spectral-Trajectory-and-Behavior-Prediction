@@ -243,7 +243,6 @@ class TrajPredEngine:
     def test_a_batch(self, engine, batch):
         _, _, _, _, _, _, _, fut, op_mask, _, _, _, _ = batch
 
-
         # Initialize Variables
         if self.cuda:
             fut = fut.cuda(self.device)
@@ -259,6 +258,7 @@ class TrajPredEngine:
                 l, c = maskedNLLTest(fut_pred, 0, 0, fut, op_mask, device=self.device, use_maneuvers=False, cuda=self.cuda)
         else:
             # Forward pass
+            #print('use_maneuvers {}'.format(self.args['use_maneuvers']))
             if self.args['use_maneuvers']:
                 fut_pred, lat_pred, lon_pred = self.netPred(batch)
                 fut_pred_max = torch.zeros_like(fut_pred[0])
@@ -269,7 +269,8 @@ class TrajPredEngine:
                     fut_pred_max[:,k,:] = fut_pred[indx][:,k,:]
                 l, c = maskedMSETest(fut_pred_max, fut, op_mask, device=self.device)
             else:
-                fut_pred = self.netPred(batch)            
+                fut_pred = self.netPred(batch)
+                #print('fut groundtruth {}'.format(fut))
                 l, c = maskedMSETest(fut_pred, fut, op_mask, device=self.device)
 
 
@@ -305,6 +306,6 @@ class TrajPredEngine:
             # print(self.lastTestLoss)
             seq_loss = rmse.tolist()
             seq_loss = [x for x in seq_loss if x != 0]
-            print(rmse)
+            print('RMSE {}'.format(rmse))
             print("Last Test loss: " + str(seq_loss[-1]))
             print("Avg Test loss: " + str(rmse.mean().item()))
